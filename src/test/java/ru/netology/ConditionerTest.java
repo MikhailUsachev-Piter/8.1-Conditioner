@@ -1,38 +1,82 @@
-package ru.netology;
+package ru.netology.domain;
 
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 class ConditionerTest {
+
     @Test
-    public void shouldCreate() {
+    void increaseCurrentTemperature() {
         Conditioner conditioner = new Conditioner();
+        conditioner.setOn(true);
+        conditioner.setCurrentTemperature(34);
+        conditioner.increaseCurrentTemperature();
+        assertEquals(35, conditioner.getCurrentTemperature());
     }
 
     @Test
-    public void shouldInitFieldToZeroValues() {
+    void currentTemperatureEqualMaxTemperature() {
         Conditioner conditioner = new Conditioner();
-        assertNull(conditioner.name);
-        assertEquals(0, conditioner.maxTemperature);
-        assertEquals(0, conditioner.minTemperature);
-        assertEquals(0, conditioner.currentTemperature);
-        assertFalse(conditioner.on);
+        conditioner.setOn(true);
+        conditioner.setCurrentTemperature(35);
+        conditioner.increaseCurrentTemperature();
+        assertEquals(conditioner.getMaxTemperature(), conditioner.getCurrentTemperature());
     }
 
     @Test
-    @Disabled
-    public void shouldThrowNPE() {
+    void currentTemperatureMoreMaxTemperature() {
         Conditioner conditioner = new Conditioner();
-        assertEquals(0, conditioner.name.length());
+        conditioner.setOn(true);
+        conditioner.setCurrentTemperature(36);
+        conditioner.increaseCurrentTemperature();
+        assertEquals(conditioner.getMaxTemperature(), conditioner.getCurrentTemperature());
     }
 
     @Test
-    public void shouldChangeFields() {
+    void decreaseCurrentTemperature() {
         Conditioner conditioner = new Conditioner();
-        assertEquals(0, conditioner.currentTemperature);
-        conditioner.currentTemperature = -100;
-        assertEquals(-100, conditioner.currentTemperature);
+        conditioner.setOn(true);
+        conditioner.setCurrentTemperature(6);
+        conditioner.decreaseCurrentTemperature();
+        assertEquals(5, conditioner.getCurrentTemperature());
+    }
+
+    @Test
+    void currentTemperatureEqualMinTemperature() {
+        Conditioner conditioner = new Conditioner();
+        conditioner.setOn(true);
+        conditioner.setCurrentTemperature(5);
+        conditioner.decreaseCurrentTemperature();
+        assertEquals(conditioner.getMinTemperature(), conditioner.getCurrentTemperature());
+    }
+
+    @Test
+    void currentTemperatureLessMinTemperature() {
+        Conditioner conditioner = new Conditioner();
+        conditioner.setOn(true);
+        conditioner.setCurrentTemperature(4);
+        conditioner.decreaseCurrentTemperature();
+        assertEquals(conditioner.getMinTemperature(), conditioner.getCurrentTemperature());
+    }
+
+    @Test
+    void increaseCurrentTemperatureConditionerIsOFF() {
+        Conditioner conditioner = new Conditioner();
+        conditioner.setOn(false);
+        conditioner.setCurrentTemperature(15);
+        conditioner.increaseCurrentTemperature();
+        assertEquals(15, conditioner.getCurrentTemperature());
+        assertEquals(false, conditioner.isOn());
+    }
+
+    @Test
+    void decreaseCurrentTemperatureConditionerIsOFF() {
+        Conditioner conditioner = new Conditioner();
+        conditioner.setOn(false);
+        conditioner.setCurrentTemperature(10);
+        conditioner.decreaseCurrentTemperature();
+        assertEquals(10, conditioner.getCurrentTemperature());
+        assertEquals(false, conditioner.isOn());
     }
 }
